@@ -28,6 +28,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/localStorage.js', ssr: false },
+    { src: '~/plugins/axios.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -52,6 +54,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: process.env.API_URL || 'http://localhost:3000/api/v1'
   },
   /*
   ** Build configuration
