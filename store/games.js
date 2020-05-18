@@ -5,6 +5,12 @@ export const state = () => ({
 })
 
 export const mutations = {
+  async create (state, payload) {
+    const { data } = await this.$axios.post('/games', payload)
+
+    state.games = [data.game, ...state.games]
+    state.current = data.game
+  },
   async fetch (state) {
     const { data } = await this.$axios.get('/games')
     state.games = data.games

@@ -1,5 +1,6 @@
 <template>
   <div v-if="board && game">
+    <nuxt-link class="py-2 text-red-500" to="/">← Back to all games.</nuxt-link>
     <p class="text-sm">Dimensions: {{ game.rows }} * {{ game.cols }}</p>
     <p class="text-sm">Bombs: {{ game.bombs }}</p>
     <p
@@ -23,7 +24,6 @@
         </p>
       </div>
     </div>
-    <nuxt-link class="text-red-500" to="/">Back to all games.</nuxt-link>
   </div>
   <div v-else>
     <p>

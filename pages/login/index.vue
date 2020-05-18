@@ -11,12 +11,26 @@
               <form class="form-horizontal w-3/4 mx-auto" @submit="onSubmit">
                 <div class="flex flex-col mt-4">
                   <input
+                    id="name"
+                    ref="name"
+                    v-model="name"
+                    type="text"
+                    class="flex-grow mt-2 h-8 py-5 px-3 rounded border border-grey-400"
+                    name="name"
+                    :required="allowRegister"
+                    placeholder="Name"
+                    v-show="allowRegister"
+                  >
+                  <p v-if="allowRegister" class="text-sm text-red-700">Please, type your name to register.</p>
+                  <input
                     id="username"
+                    ref="username"
                     v-model="username"
                     type="text"
-                    class="flex-grow h-8 py-5 px-3 rounded border border-grey-400"
+                    class="flex-grow mt-2 h-8 py-5 px-3 rounded border border-grey-400"
                     name="username"
                     required
+                    autofocus
                     placeholder="Username"
                   >
                 </div>
@@ -36,12 +50,13 @@
 </template>
 
 <script>
-
 export default {
   layout: 'public',
   data () {
     return {
-      username: ''
+      username: '',
+      name: '',
+      allowRegister: false
     }
   },
   beforeMount () {
@@ -53,11 +68,18 @@ export default {
     async onSubmit (e) {
       e.preventDefault()
 
-      const { user } = await this.$axios.$post('/users/sign_in', {
-        user: { username: this.username }
-      })
+      const user = this.allowRegister
+        ? { username: this.username, name: this.name }
+        : { username: this.username }
 
-      this.$store.commit('user/login', user)
+      const response = await this.$axios.$post('/users/sign_in', { user })
+
+      if (response.user.id === null) {
+        this.allowRegister = true
+        document.getElementById('name').focus()
+      }
+
+      this.$store.commit('user/login', response.user)
       this.$router.push('/')
     }
   }
