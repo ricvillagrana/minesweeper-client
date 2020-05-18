@@ -17,6 +17,7 @@
           class="border-solid border border-gray-500 flex justify-center items-center text-xs"
           :data-coord="[rowKey, colKey]"
           @click="reveal"
+          @contextmenu="flag"
         >
           {{ show(cell) }}
         </p>
@@ -47,11 +48,28 @@ export default {
   },
   methods: {
     async reveal (e) {
+      e.preventDefault()
+
       if (this.game.result === 'playing') {
         const coord = e.target.getAttribute('data-coord').split(',')
         const id = this.$route.params.id
 
-        await this.$store.commit('games/reveal', { id, coord })
+        await this.$store.commit('games/exec', { id, coord, action: 'reveal' })
+      }
+    },
+    async flag (e) {
+      e.preventDefault()
+
+      const content = e.target.textContent.trim()
+      const flagSymbol = { F: 'unflag', '': 'flag' }
+      const isValidSymbol = Object.keys(flagSymbol).some(s => s === content)
+
+      if (isValidSymbol && this.game.result === 'playing') {
+        const coord = e.target.getAttribute('data-coord').split(',')
+        const flag = flagSymbol[content]
+        const id = this.$route.params.id
+
+        await this.$store.commit('games/exec', { id, coord, action: flag })
       }
     },
     show (cell) {

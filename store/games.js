@@ -15,9 +15,9 @@ export const mutations = {
     state.current = state.games.filter(game => game.id === payload)[0]
     state.board = data.board
   },
-  async reveal (state, payload) {
+  async exec (state, payload) {
     const { data } = await this.$axios.post(
-      `/games/${payload.id}/reveal`,
+      `/games/${payload.id}/${payload.action}`,
       payload
     )
 
