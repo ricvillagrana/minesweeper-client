@@ -44,6 +44,11 @@ export default {
       username: ''
     }
   },
+  beforeMount () {
+    if (this.$store.state.user.data.id !== '') {
+      this.$router.push('/')
+    }
+  },
   methods: {
     async onSubmit (e) {
       e.preventDefault()
