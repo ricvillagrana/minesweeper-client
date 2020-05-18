@@ -7,6 +7,8 @@
           :key="colKey"
           :class="`w-${cellSize} h-${cellSize} text-${cellColor(cell)} bg-${cellBg(cell)}`"
           class="border-solid border border-gray-500 flex justify-center items-center text-xs"
+          :data-coord="[rowKey, colKey]"
+          @click="reveal"
         >
           {{ show(cell) }}
         </p>
@@ -36,6 +38,12 @@ export default {
     }
   },
   methods: {
+    async reveal (e) {
+      const coord = e.target.getAttribute('data-coord').split(',')
+      const id = this.$route.params.id
+
+      await this.$store.commit('games/reveal', { id, coord })
+    },
     show (cell) {
       const toShow = {
         hidden: ' ',
@@ -71,7 +79,6 @@ export default {
       }
       return color[cell] || cell
     }
-
   },
   computed: {
     ...mapState({
