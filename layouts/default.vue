@@ -27,6 +27,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  name: 'default',
   middleware: 'authenticated',
   computed: {
     ...mapState({
@@ -35,7 +36,9 @@ export default {
   },
   methods: {
     logout () {
+      this.$axios.setToken(false)
       this.$store.commit('user/logout')
+      this.$store.commit('games/clean')
       this.$router.push('/login')
     }
   }

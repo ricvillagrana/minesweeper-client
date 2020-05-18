@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-col-reverse md:flex-row">
     <div class="flex flex-col w-full md:w-1/2 overflow-y-scroll h-64 md:h-128 xl:h-128">
+      <p class="flex justify-center items-center h-full text-gray-500" v-if="games && games.length === 0">
+        No games yet!
+      </p>
       <div
         v-for="(game, key) in games"
         :key="key"
@@ -52,6 +55,11 @@
         Start new game
       </button>
     </div>
+    <div class="flex flex-col justify-center items-center w-full md:w-1/2 h-64" v-else>
+      <button class="px-3 py-1 rounded bg-blue-500 text-white">
+        Start new game
+      </button>
+    </div>
   </div>
 </template>
 
@@ -79,7 +87,7 @@ export default {
       current_game: state => state.games.current
     })
   },
-  async beforeMount () {
+  async beforeCreate () {
     await this.$store.commit('games/fetch')
   }
 }

@@ -76,9 +76,9 @@ export default {
 
       if (response.user.id === null) {
         this.allowRegister = true
-        document.getElementById('name').focus()
       }
 
+      this.$axios.setToken(response.user.id)
       this.$store.commit('user/login', response.user)
       this.$router.push('/')
     }
