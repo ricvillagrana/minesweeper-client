@@ -1,5 +1,13 @@
 <template>
-  <div v-if="board">
+  <div v-if="board && game">
+    <p class="text-sm">Dimensions: {{ game.rows }} * {{ game.cols }}</p>
+    <p class="text-sm">Bombs: {{ game.bombs }}</p>
+    <p
+      :class="`bg-${resultColors[game.result]}-100 text-${resultColors[game.result]}-500`"
+      class="rounded py-1 px-2 text-xs w-24 text-center"
+      >
+      {{ game.result.toUpperCase() }}
+    </p>
     <div class="flex flex-col">
       <div v-for="(row, rowKey) in board" :key="rowKey" class="flex flex-row">
         <p
@@ -39,10 +47,12 @@ export default {
   },
   methods: {
     async reveal (e) {
-      const coord = e.target.getAttribute('data-coord').split(',')
-      const id = this.$route.params.id
+      if (this.game.result === 'playing') {
+        const coord = e.target.getAttribute('data-coord').split(',')
+        const id = this.$route.params.id
 
-      await this.$store.commit('games/reveal', { id, coord })
+        await this.$store.commit('games/reveal', { id, coord })
+      }
     },
     show (cell) {
       const toShow = {
@@ -87,6 +97,7 @@ export default {
     })
   },
   async beforeMount () {
+    await this.$store.commit('games/fetch', this.$route.params.id)
     await this.$store.commit('games/fetchBoard', this.$route.params.id)
   }
 }

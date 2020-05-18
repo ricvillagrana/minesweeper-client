@@ -21,6 +21,10 @@ export const mutations = {
       payload
     )
 
+    state.games = state.games.map(game =>
+      game.id === data.game.id ? data.game : game
+    )
+    state.current = state.games.filter(game => game.id === payload.id)[0]
     state.board = data.board
   }
 }
