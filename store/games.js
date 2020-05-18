@@ -10,9 +10,9 @@ export const mutations = {
     state.games = data.games
     state.current = data.games[0]
   },
-  async fetchBoard (state) {
-    const { data } = await this.$axios.get(`/games/${state.current.id}`)
-    state.current = data.game
+  async fetchBoard (state, payload) {
+    const { data } = await this.$axios.get(`/games/${payload}`)
+    state.current = state.games.filter(game => game.id === payload)[0]
     state.board = data.board
   }
 }
