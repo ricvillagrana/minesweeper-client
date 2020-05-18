@@ -51,15 +51,66 @@
         <p class="my-2">Or</p>
       <button
         class="px-3 py-1 rounded bg-blue-500 text-white"
+        @click="openModal"
       >
         Start new game
       </button>
     </div>
     <div class="flex flex-col justify-center items-center w-full md:w-1/2 h-64" v-else>
-      <button class="px-3 py-1 rounded bg-blue-500 text-white">
+      <button class="px-3 py-1 rounded bg-blue-500 text-white" @click="openModal">
         Start new game
       </button>
     </div>
+    <sweet-modal ref="gameConfig">
+      <h2 class="text-3xl font-bold">New game</h2>
+      <form class="form-horizontal w-3/4 mx-auto" @submit="create">
+        <div class="flex flex-col mt-4">
+          <div class="flex flex-col items-start my-2">
+            <label for="rows">Rows</label>
+            <input
+              id="rows"
+              v-model="gameConfig.rows"
+              type="number"
+              class="flex-grow w-full mt-2 h-8 py-5 px-3 rounded border border-grey-400"
+              name="rows"
+              required
+              placeholder="Rows, e.g. 10"
+            >
+          </div>
+          <div class="flex flex-col items-start my-2">
+            <label for="rows">Cols</label>
+            <input
+              id="cols"
+              v-model="gameConfig.cols"
+              type="number"
+              class="flex-grow w-full mt-2 h-8 py-5 px-3 rounded border border-grey-400"
+              name="cols"
+              required
+              placeholder="Cols, e.g. 10"
+            >
+          </div>
+          <div class="flex flex-col items-start my-2">
+            <label for="rows">Bombs</label>
+            <input
+              id="bombs"
+              v-model="gameConfig.bombs"
+              type="number"
+              min="2"
+              :max="gameConfig.rows * gameConfig.cols /2"
+              class="flex-grow w-full mt-2 h-8 py-5 px-3 rounded border border-grey-400"
+              name="bombs"
+              required
+              placeholder="Cols, e.g. 10"
+            >
+          </div>
+        </div>
+            <div class="flex flex-col mt-8">
+              <button type="submit" class="bg-red-500 hover:bg-red-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                Create now!
+              </button>
+            </div>
+      </form>
+    </sweet-modal>
   </div>
 </template>
 
@@ -73,10 +124,27 @@ export default {
         playing: 'blue',
         looser: 'red',
         winner: 'teal'
+      },
+      gameConfig: {
+        cols: 10,
+        rows: 8,
+        bombs: 20
       }
     }
   },
   methods: {
+    openModal () {
+      console.log(this.$refs.modal)
+      this.$refs.gameConfig.open()
+    },
+    async create (e) {
+      e.preventDefault()
+
+      await this.$store.commit('games/create', this.gameConfig)
+      const currentId = this.$store.state.games.current.id
+
+      this.$router.push(`/game/${currentId}`)
+    },
     buttonColor (result) {
       return `bg-${this.resultColors[result]}-500 text-white`
     }

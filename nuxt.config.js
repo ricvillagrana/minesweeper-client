@@ -29,7 +29,8 @@ export default {
   */
   plugins: [
     { src: '~/plugins/localStorage.js', ssr: false },
-    { src: '~/plugins/axios.js', ssr: false }
+    { src: '~/plugins/axios.js', ssr: false },
+    { src: '~/plugins/sweet-modal-vue', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules

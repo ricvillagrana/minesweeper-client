@@ -38,7 +38,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      cellSize: 6,
+      cellSize: 8,
       resultColors: {
         playing: 'blue',
         looser: 'red',
