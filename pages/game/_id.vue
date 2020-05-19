@@ -30,6 +30,7 @@
       Cannot load such game.
       <nuxt-link class="text-red-500" to="/">Go back.</nuxt-link>
     </p>
+    <p class="bg-teal-500" style="display: none;"></p>
   </div>
 </template>
 <script>
