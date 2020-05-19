@@ -76,11 +76,11 @@ export default {
 
       if (response.user.id === null) {
         this.allowRegister = true
+      } else {
+        this.$axios.setToken(response.user.id)
+        this.$store.commit('user/login', response.user)
+        this.$router.push('/')
       }
-
-      this.$axios.setToken(response.user.id)
-      this.$store.commit('user/login', response.user)
-      this.$router.push('/')
     }
   }
 }
