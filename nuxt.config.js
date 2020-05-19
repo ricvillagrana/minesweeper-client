@@ -66,5 +66,37 @@ export default {
     */
     extend (config, ctx) {
     }
+  },
+  generate: {
+    fallback: true
+  },
+  purgeCSS: {
+    enabled: true,
+    content: [
+      './pages/**/*.vue',
+      './components/**/*.vue',
+      './layouts/**/*.vue',
+      './node_modules/sweet-modal-vue/src/**/*.vue'
+    ],
+    options: {
+      whitelist: () =>  [
+        'w-8',
+        'h-8',
+        'sweet-box-actions',
+        'sweet-action-close',
+        'sweet-content',
+        'sweet-modal-overlay',
+        'sweet-modal',
+        'sweet-content-content',
+        'bg-teal-700',
+        'bg-teal-500'
+      ],
+      whitelistPatterns: [
+        /sweet-/,
+        /w-/,
+        /bg-/,
+        /text-/
+      ]
+    }
   }
 }

@@ -35,7 +35,7 @@
       <h1 class="text-xl font-bold">Current game</h1>
       <p
         :class="`bg-${resultColors[current_game.result]}-100 text-${resultColors[current_game.result]}-500`"
-        class="rounded bg-red-100 text-red-500 py-1 px-2 text-xs"
+        class="rounded py-1 px-2 text-xs"
       >
         {{ current_game.result.toUpperCase() }}
       </p>
