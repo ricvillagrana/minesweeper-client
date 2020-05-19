@@ -17,7 +17,7 @@ export const mutations = {
   fetchBoard (state, payload) {
     state.board = payload.board
     state.game = payload.game
-    state.current = state.games.filter(game => game.id === payload.game.id)[0]
+    state.current = payload.game
   },
   clean (state) {
     state.games = []
