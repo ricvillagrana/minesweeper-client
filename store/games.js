@@ -5,21 +5,19 @@ export const state = () => ({
 })
 
 export const mutations = {
-  async create (state, payload) {
-    const { data } = await this.$axios.post('/games', payload)
-
-    state.games = [data.game, ...state.games]
-    state.current = data.game
+  create (state, payload) {
+    state.games = [payload.game, ...state.games]
+    state.current = payload.game
+    state.board = payload.board
   },
-  async fetch (state) {
-    const { data } = await this.$axios.get('/games')
-    state.games = data.games
-    state.current = data.games[0]
+  fetch (state, payload) {
+    state.games = payload.games
+    state.current = payload.games[0]
   },
-  async fetchBoard (state, payload) {
-    const { data } = await this.$axios.get(`/games/${payload}`)
-    state.current = state.games.filter(game => game.id === payload)[0]
-    state.board = data.board
+  fetchBoard (state, payload) {
+    state.board = payload.board
+    state.game = payload.game
+    state.current = state.games.filter(game => game.id === payload.game.id)[0]
   },
   clean (state) {
     state.games = []

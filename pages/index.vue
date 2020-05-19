@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   data () {
@@ -133,6 +133,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      createGame: 'games/create'
+    }),
     openModal () {
       console.log(this.$refs.modal)
       this.$refs.gameConfig.open()
@@ -140,7 +143,9 @@ export default {
     async create (e) {
       e.preventDefault()
 
-      await this.$store.commit('games/create', this.gameConfig)
+      const { data } = await this.$axios.post('/games', this.gameConfig)
+
+      this.createGame(data)
       const currentId = this.$store.state.games.current.id
 
       this.$router.push(`/game/${currentId}`)
@@ -156,7 +161,8 @@ export default {
     })
   },
   async beforeCreate () {
-    await this.$store.commit('games/fetch')
+    const { data } = await this.$axios.get('/games')
+    this.$store.commit('games/fetch', data)
   }
 }
 </script>

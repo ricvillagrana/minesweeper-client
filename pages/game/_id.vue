@@ -115,8 +115,8 @@ export default {
     })
   },
   async beforeMount () {
-    await this.$store.commit('games/fetch', this.$route.params.id)
-    await this.$store.commit('games/fetchBoard', this.$route.params.id)
+    const { data } = await this.$axios.get(`/games/${this.$route.params.id}`)
+    await this.$store.commit('games/fetchBoard', data)
   }
 }
 </script>
